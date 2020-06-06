@@ -12,7 +12,9 @@
     "express": "^4.17.1",
     "peer": "^0.2.10",
     "peerjs": "^1.1.0",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "webpack": "^4.41.2",
+    "webpack-merge": "^4.2.2"
   },
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./server/server.js",
@@ -36,6 +38,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.3.10"
   }
 }
-
