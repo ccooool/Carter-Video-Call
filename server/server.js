@@ -5,18 +5,7 @@ const io = require('socket.io')(http);
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackConfig = require('../webpack.dev.js');
-const PORT = process.env.PORT || 3000;
-
-
-// port setup and listening 
-http.listen(PORT, () => {
-    console.log("listening on port " + PORT)
-});
-
-// serving our index.html 
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + "/index.html")
-})
+var bodyParser = require('body-parser');
 
 // allows files in this folder to be served all the time
 app.use(express.static('public'));
@@ -28,3 +17,35 @@ if (process.env.NODE_ENV === 'development') {
   // Static serve the dist/ folder in production
   app.use(express.static('dist'));
 }
+
+// app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
+
+const port = process.env.PORT || 8000;
+
+// // remember to run webpack or this path wont find the files needed for the bundle
+// app.use(express.static(path.resolve(__dirname, '../public/')))
+
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+    let err = new Error('404 Error');
+    err.status = 404;
+    next(err);
+});
+
+// server error handle
+app.use(function (req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
+})
+
+app.listen(port, () => {
+    console.log(`server and client are now running on ${port}`);
+});
