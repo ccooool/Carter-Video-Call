@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const socketio = require('socket.io');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackConfig = require('../webpack.dev.js');
@@ -46,6 +46,21 @@ app.use(function (req, res, next) {
     });
 })
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`server and client are now running on ${port}`);
 });
+
+const io = socketio(server);
+
+io.on('connection', function (socket) {
+  console.log("client is connected " + socket.id)
+  // receive the event, then send data to clients
+  socket.on('userMessage', (data) => {
+      io.sockets.emit("userMessage", data)
+  })
+  // receive the typing event, send out to clients
+  socket.on('userTyping', (data) => {
+      socket.broadcast.emit('userTyping', data)
+
+  });
+})
