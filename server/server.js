@@ -52,16 +52,19 @@ const server = app.listen(port, () => {
 
 const io = socketio(server);
 
+var messages = []
+
 io.on('connection', function (socket) {
   console.log("client is connected " + socket.id)
   // receive the event, then send data to clients
   socket.on('userMessage', (data) => {
       console.log(data);
+      messages.push(data);
       io.sockets.emit("userMessage", data)
   })
   // receive the typing event, send out to clients
-  socket.on('userTyping', (data) => {
-      socket.broadcast.emit('userTyping', data)
-
+  socket.on('getMessages', (data) => {
+      console.log("i got a request for updated list of messages")
+      socket.emit('messageList', messages)
   });
 })
