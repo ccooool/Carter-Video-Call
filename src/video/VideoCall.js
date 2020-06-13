@@ -1,6 +1,6 @@
 import React from "react";
 import "../App.css";
-import { Button } from "react-bootstrap";
+import { Container, Row, Button, Col } from "react-bootstrap";
 
 class VideoCall extends React.Component {
     constructor(props) {
@@ -9,17 +9,17 @@ class VideoCall extends React.Component {
 
     render() {
         return (
-            <div className="container">
-                <div className="row">
-                    <div className="col-sm-6 col-md-6 col-lg-6">
+            <Container>
+                <Row>
+                    <Col>
                         remote
                         <video id="rVideo" autoPlay="autplay"></video>
-                    </div>
-                    <div className="col-sm-6 col-md-6 col-lg-6">
+                    </Col>
+                    <Col>
                         local
                         <video id="lVideo" autoPlay="autplay" muted></video>
-                    </div>
-                </div>
+                    </Col>
+                </Row>
                 <span id="displayId" />
                 <input
                     type="text"
@@ -34,7 +34,7 @@ class VideoCall extends React.Component {
                 <Button variant="danger" id="call_button" type="submit">
                     Call
                 </Button>
-            </div>
+            </Container>
         );
     }
 }
