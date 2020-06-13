@@ -4,24 +4,34 @@ import "./App.css";
 import io from "socket.io-client";
 import { Container, Row, Button, Col } from "react-bootstrap";
 
-const socket = io(`ws://${window.location.host}`, { reconnection: false });
-const connectedPromise = new Promise((resolve) => {
-    socket.on("connect", () => {
-        console.log("Connected to server!");
-        resolve();
-    });
-});
-
 class App extends React.Component {
     constructor(props) {
         super(props);
-		this.state = {};
-		this.myRef = React.createRef();
-	}
+        this.state = {};
+        this.form = {
+            user: "",
+            message: ""
+        }
+        this.socket = io(`ws://${window.location.host}`, { reconnection: false });
 
-	componentDidMount() {
-		this.myRef.current.focus();
+        this.connectedPromise = new Promise((resolve) => {
+            this.socket.on("connect", () => {
+                console.log("Connected to server!");
+                resolve();
+            });
+        });
 	}
+    
+    handleChange = e => {
+        this.form[e.target.id] = e.target.value;
+    }
+
+    sendMessage() {
+        this.socket.emit('userMessage', {
+            user: this.form.user,
+            message: this.form.message
+        })
+    }
 
     render() {
         return (
@@ -36,27 +46,24 @@ class App extends React.Component {
                             </div>
                             <div className="container">
                                 <input
+                                    onChange={this.handleChange}
                                     type="text"
-                                    id="handle"
+                                    id="user"
                                     className="form-control"
                                     placeholder="name"
                                     required
-                                    ref={this.myRef}
                                 />
                                 <input
+                                    onChange={this.handleChange}
                                     type="text"
                                     id="message"
                                     className="form-control"
                                     placeholder="enter a message"
                                     required
                                 />
-                                <button
-                                    id="button"
-                                    className="btn btn-lg btn-primary btn-block"
-                                    type="submit"
-                                >
+                                <Button type="primary" id="button" type="submit" onClick={() => this.sendMessage()}>
                                     Send
-                                </button>
+                                </Button>
                             </div>
                         </Col>
                         <Col>
@@ -86,18 +93,10 @@ class App extends React.Component {
                                     placeholder="enter a connection id"
                                     required
                                 />
-                                <button
-                                    id="conn_button"
-                                    className="btn btn-lg btn-success btn-block"
-                                    type="submit"
-                                >
+                                <Button variant="success" id="conn_button" type="submit">
                                     Connect
-                                </button>
-                                <Button variant="danger"
-                                    id="call_button"
-                                    className="btn btn-lg btn-danger btn-block"
-                                    type="submit"
-                                >
+                                </Button>
+                                <Button variant="danger" id="call_button" type="submit">
                                     Call
                                 </Button>
                             </div>

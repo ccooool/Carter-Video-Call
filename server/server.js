@@ -56,6 +56,7 @@ io.on('connection', function (socket) {
   console.log("client is connected " + socket.id)
   // receive the event, then send data to clients
   socket.on('userMessage', (data) => {
+      console.log(data);
       io.sockets.emit("userMessage", data)
   })
   // receive the typing event, send out to clients
