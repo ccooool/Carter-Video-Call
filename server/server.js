@@ -52,7 +52,7 @@ const server = app.listen(port, () => {
 
 const io = socketio(server);
 
-var messages = []
+var messages = [];
 
 io.on('connection', function (socket) {
   console.log("client is connected " + socket.id)
