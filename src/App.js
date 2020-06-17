@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import io from "socket.io-client";
-import { Container, Row, Button, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import MessageList from "./chat/MessageList";
 import SendMessage from "./chat/SendMessage";
 import VideoCall from "./video/VideoCall";
@@ -10,12 +10,16 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            messages: []
+            messages: [],
         };
-        
-        this.socket = io(`ws://${window.location.host}`, {
-            reconnection: false,
-        });
+
+        this.socket = io(
+            `ws://${window.location.host}`,
+            {
+                reconnection: false,
+            },
+            { secure: true }
+        );
 
         this.connectedPromise = new Promise((resolve) => {
             this.socket.on("connect", () => {
@@ -35,7 +39,7 @@ class App extends React.Component {
             this.setState({
                 messages: [...this.state.messages, ...messageList],
             });
-        })
+        });
     }
 
     componentDidMount() {
@@ -44,7 +48,7 @@ class App extends React.Component {
 
     sendMessage = (user, message) => {
         this.socket.emit("userMessage", { user, message });
-    }
+    };
 
     render() {
         return (
@@ -53,13 +57,11 @@ class App extends React.Component {
                 <Container>
                     <Row>
                         <Col>
-                            <MessageList
-                                messages={this.state.messages}
-                            />
-                            <SendMessage sendMessage={this.sendMessage}/>
+                            <MessageList messages={this.state.messages} />
+                            <SendMessage sendMessage={this.sendMessage} />
                         </Col>
                         <Col>
-                            <VideoCall/>
+                            <VideoCall />
                         </Col>
                     </Row>
                 </Container>
