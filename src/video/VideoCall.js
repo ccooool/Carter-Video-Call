@@ -25,10 +25,16 @@ class VideoCall extends React.Component {
             userId: "",
             connId: ""
         }
+        // for now use the public servers
         this.peer = new Peer();
+        // this.peer = new Peer({
+        //     host: 'localhost',
+        //     port: 9000,
+        //     path: '/myapp'
+        // });
 
         this.peer.on('open', (id) => {
-            this.setState({userId: id})
+            this.setState({ userId: id })
         });
 
         // when a client connects to another connected client
@@ -66,7 +72,7 @@ class VideoCall extends React.Component {
                 recStream(stream, 'lVideo');
             },
             error: function (err) {
-                alert("cannot access your camera");
+                alert("do ya have a friggin camera");
                 console.log(err);
             }
         })
@@ -98,14 +104,12 @@ class VideoCall extends React.Component {
         return (
             <Container>
                 <Row>
-                    <Col>
-                        remote
-                        <video id="rVideo" autoPlay="autplay"></video>
-                    </Col>
-                    <Col>
-                        local
-                        <video id="lVideo" autoPlay="autplay" muted></video>
-                    </Col>
+                    remote
+                    <video id="rVideo" autoPlay="autplay"></video>
+                </Row>
+                <Row>
+                    local
+                    <video id="lVideo" autoPlay="autplay" muted></video>
                 </Row>
                 {this.state.userId}
                 <input
