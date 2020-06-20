@@ -28,7 +28,7 @@ class VideoCall extends React.Component {
         // for now use the public servers
         // this.peer = new Peer();
         this.peer = new Peer({
-            host: 'https://peerjs-server1234.herokuapp.com',
+            host: 'peerjs-server1234.herokuapp.com',
             port: 9000,
             path: '/myapp'
         });
