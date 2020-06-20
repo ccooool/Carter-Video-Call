@@ -26,12 +26,12 @@ class VideoCall extends React.Component {
             connId: ""
         }
         // for now use the public servers
-        this.peer = new Peer();
-        // this.peer = new Peer({
-        //     host: 'localhost',
-        //     port: 9000,
-        //     path: '/myapp'
-        // });
+        // this.peer = new Peer();
+        this.peer = new Peer({
+            host: 'https://peerjs-server1234.herokuapp.com',
+            port: 9000,
+            path: '/myapp'
+        });
 
         this.peer.on('open', (id) => {
             this.setState({ userId: id })
